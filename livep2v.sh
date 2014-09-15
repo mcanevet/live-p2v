@@ -25,7 +25,7 @@ ssh root@${HOST} "mount|grep ^${DISK}" | while read device on mount_point type f
   $DEBUG sudo mount /dev/mapper/loop0p${device_number} ${TARGET}${mount_point}
 done
 
-$DEBUG sudo rsync -aAXvP root@${HOST}:/ ${TARGET}/
+$DEBUG sudo rsync -aAXvP root@${HOST}:/ ${TARGET}/ --delete --exclude={/dev/*,/proc/*,/sys/*,/tmp/*,/run/*,/mnt/*,/media/*,/lost+found,/home/*/.gvfs}
 
 ssh root@${HOST} "mount|grep ^${DISK}|tac" | while read device on mount_point type fstype options; do
   device_number=$(echo ${device} | sed "s:${DISK}::")
