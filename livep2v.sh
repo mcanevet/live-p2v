@@ -10,7 +10,7 @@ sudo kpartx -d ${HOST}.${FMT} 2> /dev/null
 
 if [ ! -f ${HOST}.${FMT} ]; then
   # Create disk image
-  disk_size=$(ssh root@${HOST} fdisk -l ${DISK} 2> /dev/null | grep "Disk ${DISK}"|cut -f5 -d' ')
+  disk_size=$(ssh root@${HOST} LANG=C fdisk -l ${DISK} 2> /dev/null | grep "Disk ${DISK}"|cut -f5 -d' ')
   $DEBUG qemu-img create ${HOST}.${FMT} ${disk_size} > /dev/null || exit 1
 
   # Dump and import Partition table
