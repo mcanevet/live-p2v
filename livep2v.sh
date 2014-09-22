@@ -14,8 +14,8 @@ if [ ! -f ${HOST}.${FMT} ]; then
   qemu-img create ${HOST}.${FMT} ${disk_size} > /dev/null || exit 1
 
   # Dump and import Partition table
-  ssh root@${HOST} "dd if=${DISK} bs=512 count=1" | dd of=${HOST}.${FMT} bs=512 count=1 conv=notrunc || exit 1
   ssh root@${HOST} "sfdisk -d ${DISK}" 2> /dev/null | /sbin/sfdisk ${HOST}.${FMT} > /dev/null 2>&1 || exit 1
+  ssh root@${HOST} "dd if=${DISK} bs=512 count=1" | dd of=${HOST}.${FMT} bs=512 count=1 conv=notrunc || exit 1
 
   # Create partition mapping
   $DEBUG sudo kpartx -as ${HOST}.${FMT} || exit 1
