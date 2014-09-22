@@ -22,9 +22,11 @@ if [ ! -f ${HOST}.${FMT} ]; then
 
   # Create filesystem
   mkdir -p ${TARGET} || exit 1
-  ssh root@${HOST} "mount|grep ^${DISK}" | while read device on mount_point type fstype options; do
+  ssh root@${HOST} "blkid|grep ^${DISK}|grep -v -E 'TYPE=\"(swap|vfat)\"'" | while read device vars; do
+    device=${device%?}
     device_number=$(echo ${device} | sed "s:${DISK}::")
-    $DEBUG sudo mkfs.${fstype} -F /dev/mapper/loop0p${device_number} || exit 1
+    eval $vars
+    $DEBUG sudo mkfs.${TYPE} -U ${UUID} /dev/mapper/loop0p${device_number} || exit 1
   done
 
   # Create swap
