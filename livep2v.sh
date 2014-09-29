@@ -83,6 +83,9 @@ ssh root@${HOST} "mount|grep ^${DISK}|tac" | while read device on mount_point ty
   $DEBUG sudo umount /dev/nbd0p${device_number} || exit 1
 done
 
+$DEBUG sudo umount /dev/mapper/*
+$DEBUG sudo umount /dev/nbd0*
+
 $DEBUG sudo lvm vgchange -an
 
 # Delete partition mapping
