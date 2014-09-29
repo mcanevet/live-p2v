@@ -30,7 +30,6 @@ if [ ! -f ${HOST}.${FMT} ]; then
     $DEBUG sudo pvs
     $DEBUG sudo lvm vgchange -ay
     ls /dev/mapper
-    sleep 3
   done
 
   # Create filesystem
