@@ -80,7 +80,7 @@ $DEBUG sudo rsync -aAX root@${HOST}:/ ${TARGET}/ --delete --exclude={/dev/*,/pro
 
 # Fix grub
 for i in /dev /dev/pts /proc /sys /run; do sudo mount -B $i ${TARGET}$i; done
-sudo chroot ${TARGET} grub-install --recheck /dev/ndb0
+sudo chroot ${TARGET} grub-install --recheck /dev/nbd0
 sudo chroot ${TARGET} update-grub
 for i in /dev/pts /dev /proc /sys /run; do sudo umount ${TARGET}$i; done
 
