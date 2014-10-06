@@ -76,7 +76,7 @@ ssh root@${HOST} "mount|grep ^${DISK}" | while read device on mount_point type f
 done
 
 # Sync files
-$DEBUG sudo rsync -aAXvP root@${HOST}:/ ${TARGET}/ --delete --exclude={/dev/*,/proc/*,/sys/*,/tmp/*,/run/*,/mnt/*,/media/*,/lost+found,/home/*/.gvfs,/home/*,/var/lib/glance/*}
+$DEBUG sudo rsync -aAX root@${HOST}:/ ${TARGET}/ --delete --exclude={/dev/*,/proc/*,/sys/*,/tmp/*,/run/*,/mnt/*,/media/*,/lost+found,/home/*/.gvfs,/home/*,/var/lib/glance/*}
 
 # Fix grub
 for i in /dev /dev/pts /proc /sys /run; do sudo mount -B $i ${TARGET}$i; done
