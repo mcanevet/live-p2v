@@ -77,6 +77,12 @@ done
 # Sync files
 $DEBUG sudo rsync -aAXvP root@${HOST}:/ ${TARGET}/ --delete --exclude={/dev/*,/proc/*,/sys/*,/tmp/*,/run/*,/mnt/*,/media/*,/lost+found,/home/*/.gvfs,/home/*,/var/lib/glance/*}
 
+# Fix grub
+for i in /dev /dev/pts /proc /sys /run; do sudo mount -B $i ${TARGET}$i; done
+sudo chroot ${TARGET} grub-install --recheck /dev/ndb0
+sudo chroot ${TARGET} update-grub
+for i in /dev/pts /dev /proc /sys /run; do sudo umount ${TARGET}$i; done
+
 # Unmount filesystem
 ssh root@${HOST} "mount|grep ^${DISK}|tac" | while read device on mount_point type fstype options; do
   device_number=$(echo ${device} | sed "s:${DISK}::")
