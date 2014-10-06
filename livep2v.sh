@@ -4,6 +4,7 @@ HOST=$1
 DISK=${2:-/dev/sda}
 TARGET=${HOST}
 FMT=raw
+PATH=/usr/bin:/usr/sbin:/bin:/sbin
 
 # Cleanup old run
 sudo qemu-nbd -d /dev/nbd0
