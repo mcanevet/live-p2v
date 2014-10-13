@@ -14,8 +14,8 @@ if [ ! -f ${HOST}.${FMT} ]; then
   disk_size=$(ssh root@${HOST} LANG=C fdisk -l ${DISK} 2> /dev/null | grep "Disk ${DISK}"|cut -f5 -d' ')
   qemu-img create ${HOST}.${FMT} ${disk_size} > /dev/null || exit 1
 
-  # Dump and import first MB (Should contain grub stage 1 and stage 1.5)
-  ssh root@${HOST} "dd if=${DISK} bs=512 count=2048" | dd of=${HOST}.${FMT} bs=512 count=2048 conv=notrunc || exit 1
+  # Dump and import MBR
+  ssh root@${HOST} "dd if=${DISK} bs=512 count=1" | dd of=${HOST}.${FMT} bs=512 count=1 conv=notrunc || exit 1
 
   # Dump and import Partition table
   ssh root@${HOST} "sfdisk -d ${DISK}" 2> /dev/null | /sbin/sfdisk ${HOST}.${FMT} > /dev/null 2>&1 || exit 1
